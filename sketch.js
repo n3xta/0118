@@ -1,29 +1,79 @@
 // what does wind look like?
 let font;
-let black;
-let blue;
+
+let squares = [];
+let numSquares = 500;
+
+const palette = [];
 
 function preload() {
   font = loadFont('assets/mintsoda.ttf');
 }
 
 function setup() {
+
+  let palette = [
+    color(0, 0, 255),
+    color(210),
+    color(0)
+  ];
+
   createCanvas(1600, 1600);
   pixelDensity(1);
-  noLoop();
+  //noLoop();
   //frameRate(1);
+  for (let i = 0; i < numSquares; i++) {
+    let x = random(-width, 0);
+    let y = random(-100, height + 100);
+    let size = random(10, 30);
+    let speed = random(5, 20);
+    let yOffset = random(1000);
+    squares.push({
+      x: x,
+      baseY: y,
+      size: size,
+      speed: speed,
+      yOffset: yOffset,
+      c: random(palette),
+    });
+  }
 }
 
 function draw() {
-  let black = color(0, 0, 0);
-  let blue = color(0, 1, 249);
 
-  background(210);
+  //background(210);
 
   strokeCap(SQUARE);
-  brushStrokes(black, 50, 5, 50);
+  noStroke();
 
-  fill(blue);
+  for (let i = 0; i < squares.length; i++) {
+
+    let sq = squares[i];
+    
+    sq.x += sq.speed;
+
+    if (sq.x > width + sq.size) {
+      sq.x = -sq.size;
+    }
+
+    let amplitude = 30;
+
+
+    sq.y = sq.baseY + sin(frameCount * 0.05 + sq.yOffset) * amplitude;
+
+    let sizeVariation = map(cos(frameCount * 0.02 + sq.yOffset), -1, 1, -5, 5);
+    let currentSize = sq.size + sizeVariation;
+    
+    fill(sq.c);
+    
+    rectMode(CENTER);
+    rect(sq.x, sq.y, currentSize, currentSize);
+  }
+
+  if (frameCount % 10 == 0) {
+
+  let fillColor = random([color(210), color(0)]);
+  fill(fillColor);
   strokeWeight(20);
 
   let numTitles = int(random(5, 20));
@@ -36,6 +86,8 @@ function draw() {
   }
 }
 
+}
+
 function title(a, b, c) {
   textFont(font);
   textSize(random(a - 100, a + 100));
@@ -45,24 +97,4 @@ function title(a, b, c) {
   stroke(strokeColor);
 
   text('WIND', random(b - 100, b + 100), random(c - 100, c + 100));
-}
-
-function brushStrokes(paintColor, numStrokes, strokeWeightMin, strokeWeightMax) {
-  for (let i = 0; i < numStrokes; i++) {
-    
-    stroke(paintColor);
-    strokeWeight(random(strokeWeightMin, strokeWeightMax));
-    noFill();
-
-    let x1 = random(width);
-    let y1 = random(height);
-    let x2 = x1 + random(-500, 500);
-    let y2 = y1 + random(-500, 500);
-    let x3 = x2 + random(-500, 500);
-    let y3 = y2 + random(-500, 500);
-    let x4 = x3 + random(-500, 500);
-    let y4 = y3 + random(-500, 500);
-
-    bezier(x1, y1, x2, y2, x3, y3, x4, y4);
-  }
 }
