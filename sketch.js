@@ -70,21 +70,25 @@ function draw() {
     rect(sq.x, sq.y, currentSize, currentSize);
   }
 
-  if (frameCount % 10 == 0) {
+  //   if (frameCount % 30 == 0) {
 
-  let fillColor = random([color(210), color(0)]);
-  fill(fillColor);
-  strokeWeight(20);
+  //   let fillColor = random([color(210), color(0)]);
+  //   fill(fillColor);
+  //   strokeWeight(20);
 
-  let numTitles = int(random(5, 20));
-  for (let i = 0; i < numTitles; i++) {
-    let a = random(100, 600);
-    let b = random(-width, width);
-    let c = random(-height, height);
+  //   let numTitles = int(random(5, 20));
+  //   for (let i = 0; i < numTitles; i++) {
+  //     let a = random(100, 600);
+  //     let b = random(-width, width);
+  //     let c = random(-height, height);
 
-    title(a, b, c);
+  //     title(a, b, c);
+  //   }
+  // }
+
+  if (frameCount <= 300) {
+    saveCanvas('frames/frame-' + nf(frameCount, 4), 'png');
   }
-}
 
 }
 
